@@ -1,0 +1,227 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html, body, input, button {
+    font-family: "Roboto", sans-serif;
+}
+
+#container > header > h1 {
+    font-family: "Oswald", sans-serif;
+    font-size: 32px;
+    color: #0891b2;
+}
+
+#container {
+    width: 100%;
+    height: 100vh;
+    background-color: #e5e5e5;
+}
+
+
+#home {
+    width: 100%;
+    background-color: #e5e5e5;
+    display: grid;
+
+    padding-top: 100px;
+    padding-bottom: 100px;
+    padding-right: 20px;
+}
+
+#chat {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 20px;
+    display: grid;
+    
+    grid-template-rows: 32px 650px 56px;
+    grid-template-columns: 400px;
+    align-self: center;
+
+    ::-webkit-scrollbar {
+        width: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #0891b2;
+    }
+}
+
+.usersconnect {
+    position: fixed;
+    z-index: 10;
+    top: 75px;
+    left: 15px;
+    transform: scale(.1);
+    opacity: 0;
+    background-color: #e5e5e5;
+    padding: 8px 16px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    transition: .5s ease;
+}
+
+.usersconnect[data-open-users-connect="true"] {
+    transition: .5s ease;
+    opacity: 1;
+    transform: scale(1);
+    top: 90px;
+    left: 100px;
+}
+
+.update {
+    position: fixed;
+    top: 12%;
+    left: 30%;
+    transform: translate(-50%, -30%);
+    background-color: #e5e5e5;
+    z-index: 10;
+    width: 1000px;
+    transform: scale(.1);
+    opacity: 0;
+    visibility: hidden;
+    transition: .5s ease;
+}
+
+.update[data-open-update="true"] {
+    top: 12%;
+    left: 35%;
+    transform: translate(-50%, -35%);
+
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    transition: .5s ease;
+}
+
+#Modal-Create {
+    transition: .3s ease-in;
+    transform: translateX(-100%);
+    inset: 0;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.712);
+
+    display: grid;
+    grid-template-rows: max-content 1fr;
+}
+
+#Modal-Create[data-open="true"] {
+    transition: .3s ease-in;
+    transform: translateX(0)
+}
+
+#form-create {
+    width: 1000px;
+    height: 600px;
+}
+
+.loader.true {
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #0891b2; /* Blue */
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin .5s linear infinite;
+}
+
+.loader-update.true {
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #0891b2; /* Blue */
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin .5s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.approved {
+    display: none;
+}
+
+.approved.true {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#button-create-modal {
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+
+#button-create-modal:active {
+    transform: translateY(3px);
+}
+
+#bg-image {
+    background-image: url(../images/gears.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#container-message {
+    overflow-y: auto;
+}
+
+#paragraph > strong, #paragraph > p {
+    width: max-content;
+    max-width: 200px;
+    flex-wrap: wrap;
+    word-wrap: break-word;
+}
+
+.table {
+    width: 70%;
+    justify-self: end;
+    text-align: center;
+    background-color: white;
+}
+
+.table th {
+    font-size: 24px;
+    font-family: "Oswald", sans-serif;
+}
+
+.table td {
+    font-size: 20px;
+    padding: 3px;
+}
+
+.table td, th {
+    border: 1px solid rgb(201, 201, 201);
+}
+
+.table .check {
+    margin: auto;
+    color: #0891b2;
+    font-size: 28px;
+}
+
+.table > tbody > tr > th > .before-days {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 24px;
+    font-family: "Oswald", sans-serif;
+    
+    background-color: #e5e5e5;
+    height: 100px;
+}
+
+
+
+
+
+
