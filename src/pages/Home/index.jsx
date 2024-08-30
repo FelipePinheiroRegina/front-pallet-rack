@@ -1,6 +1,7 @@
 import { FaLongArrowAltDown } from "react-icons/fa"
 import { CiLogout, CiCirclePlus, CiCircleCheck } from "react-icons/ci"
 import { IoMdNotifications, IoMdNotificationsOff, IoMdSend, IoMdPerson } from "react-icons/io"
+import { MdOutlineChat } from "react-icons/md"
 import { GiGears } from "react-icons/gi";
 import { FcCalendar } from "react-icons/fc";
 
@@ -27,6 +28,7 @@ export function Home() {
     const [ openUsersConnect, setOpenUsersConnect] = useState(false)
     const [ openUpdate, setOpenUpdate ] = useState(false)
     const [ pieceUpdate, setPieceUpdate] = useState({})
+    const [ openChat, setOpenChat ] = useState(false)
 
     const [ openModalCreate, setOpenModalCreate ] = useState(false) // Visibility controller to modal of creation
 
@@ -80,6 +82,10 @@ export function Home() {
 
     const handleCloseUpdate = () => {
         setOpenUpdate(false)
+    }
+
+    const handleOpenChat = () => {
+        setOpenChat(!openChat)
     }
 
     useEffect(() => {
@@ -166,6 +172,24 @@ export function Home() {
         fetchPieces()
     }, [])
 
+    useEffect(() => {
+        // Função para verificar a largura da janela e atualizar a variável openChat
+        const handleResize = () => {
+          if (window.innerWidth > 1280) {
+            setOpenChat(true);
+          } 
+        }
+    
+        // Adiciona o listener de evento resize
+        window.addEventListener('resize', handleResize);
+    
+        // Verifica a largura da janela na montagem do componente
+        handleResize();
+    
+        // Remove o listener quando o componente for desmontado
+        return () => window.removeEventListener('resize', handleResize);
+      }, []); //
+
     return (
         <div id="home">
             <nav id="header" className="fixed top-0 right-0 left-0 h-14 bg-cyan-600 flex items-center pl-4 gap-8">
@@ -190,25 +214,19 @@ export function Home() {
                     <small>Solicitar peça</small>
                     <CiCirclePlus id="button-create" onClick={handleOpenModalCreate} size={28} cursor="pointer" className="hover:scale-110"/>
                 </div> 
+
+                <div className="flex items-center gap-2 xl:hidden">
+                    <small>{openChat === true ? 'Fechar chat' : 'Abrir chat'}</small>
+                    <MdOutlineChat size={28} cursor="pointer" onClick={handleOpenChat} className="hover:scale-110"/>
+                </div>
             </nav>
             
-            <Create isTrue={openModalCreate} isClose={handleCloseModalCreate} isCreate={handleRefresh}/>
-
-            <div className="usersconnect shadow-lg"
-                data-open-users-connect={openUsersConnect}
-            >   
-                <small>Usuários conectados</small>
-                {usersConnect && usersConnect.map((user, index) => (
-                    <p key={String(index)}>
-                        {user.name}
-                    </p>
-                ))}
-            </div>
-            
+            <Create isTrue={openModalCreate} isClose={handleCloseModalCreate} isCreate={handleRefresh}/>            
             <Update openUpdate={openUpdate} onClick={handleCloseUpdate} data={pieceUpdate} isUpdate={handleRefresh}/>
-        
+            
+            { openChat === true &&
             <form id="chat" onSubmit={handleSubmit} className="p-2">
-                <div className="bg-white flex items-center gap-2 pl-4 persons">
+                <div className="bg-white flex items-center gap-2 pl-4 persons shadow-md">
                     <IoMdPerson className="text-cyan-600 hover:scale-110" 
                                 onClick={handleOpenUsersConnect} 
                                 cursor="pointer" 
@@ -218,6 +236,17 @@ export function Home() {
                     <span className="size-5 font-bold">
                         {usersConnect.length}
                     </span> 
+                </div>
+
+                <div className="usersconnect shadow-lg"
+                data-open-users-connect={openUsersConnect}
+                >   
+                    <small>Usuários conectados</small>
+                    {usersConnect && usersConnect.map((user, index) => (
+                        <p key={String(index)}>
+                            {user.name}
+                        </p>
+                    ))}
                 </div>
 
                 <div id="container-message" className='p-2 bg-white flex flex-col gap-2 shadow-md'>
@@ -245,104 +274,104 @@ export function Home() {
 
                     <button type="submit"><IoMdSend size={24} className="text-cyan-600 hover:scale-110"/></button>
                 </div>
-            </form>
-            
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th colSpan={8} className="">
-                            <div className="flex items-center justify-center gap-2 h-14">
-                                <FcCalendar size={32}/> {dateNow} 
-                            </div> 
-                        </th>
-                    </tr>
-                    
-                    <tr className="sticky top-5">
-                        <th>Horas</th>
-                        <th>Nome</th>
-                        <th>Código</th> 
-                        <th>Porta Palete</th> 
-                        <th>Empresa</th> 
-                        <th>Quantidade</th> 
-                        <th>Requisição Vista?</th>
-                        <th>Horas que Desceu</th>
-                    </tr>
-                </thead>
-                
-                <tbody>
-                {pieces && pieces.filter(piece => piece.created_at === dateNow).length > 0 ? (
-                    pieces.filter(piece => piece.created_at === dateNow).map((piece, index) => (
-                        <tr key={index} className="cursor-pointer hover:bg-neutral-200" onClick={() => handleOpenUpdate(piece)}>
-                            <td>{piece.hours}</td>
-                            <td>{piece.name}</td>
-                            <td>{piece.code}</td>
-                            <td>{piece.pallet_rack}</td>
-                            <td className={`${piece.company === 'Patral' ? 'text-cyan-600' : 'text-red-600'}`}>{piece.company}</td>
-                            <td>{piece.amount !== 0 ? piece.amount : ''}</td>
-                            <td>{piece.look ? <CiCircleCheck className="check"/> : ''}</td>
-                            <td>{piece.hours_down ? piece.hours_down : ''}</td>
-                        </tr>
-                    ))
-                ) : (
-                    <tr>
-                        <td colSpan={8}>
-                            <div className="text-center h-32 flex items-center justify-center gap-4">
-                                <GiGears className="text-cyan-600"/> 
-                                Não há peças para esta data.
-                            </div>
-                        </td>
-                    </tr>
-                )}
+            </form>}
 
-                
-                    { dates &&
-                        <tr>
-                            <th colSpan={8} className="border-none">
-                                <div className="before-days">
-                                    <FaLongArrowAltDown/>
-                                    <p>Dias Passados</p> 
-                                    <FaLongArrowAltDown />
-                                </div>
-                            </th>
-                        </tr>
-                    } 
-             
-                    {dates &&
-                        dates.map((date, index) => (
-                            <React.Fragment key={index}>
-                                <tr>
-                                    <th colSpan={8} className="">
-                                        <div className="flex items-center justify-center gap-2 h-14">
-                                            <FcCalendar size={32}/> {date}
-                                        </div>
-                                    </th>
-                                </tr>
-
-                                {pieces.filter(piece => piece.created_at === date).map(piece => (
-                                    <tr key={String(piece.id)} className="hover:bg-neutral-200">
-                                        <td>{piece.hours}</td>
-                                        <td>{piece.name}</td>
-                                        <td>{piece.code}</td>
-                                        <td>{piece.pallet_rack}</td>
-                                        <td className={`${piece.company === 'Patral' ? 'text-cyan-600' : 'text-red-600'}`}>{piece.company}</td>
-                                        <td>{piece.amount !== 0 ? piece.amount : ''}</td>
-                                        <td>{piece.looked ? <CiCircleCheck className="check" /> : ''}</td>
-                                        <td>{piece.hours_down ? piece.hours_down : ''}</td>
-                                    </tr>
-                                ))}
-
-                                <tr>
-                                    <th colSpan={8} className="border-none">
-                                        <div className="before-days">
-                                           
-                                        </div>
-                                    </th>
-                                </tr>
-                            </React.Fragment>
-                        ))
-                    }
-                </tbody>
-            </table>
+           <div className="content">
+               
+               <table className="table">
+                   <thead>
+                       <tr>
+                           <th colSpan={8} className="">
+                               <div className="flex items-center justify-center gap-2 h-14">
+                                   <FcCalendar size={32}/> {dateNow}
+                               </div>
+                           </th>
+                       </tr>
+               
+                       <tr>
+                           <th>Horas</th>
+                           <th>Nome</th>
+                           <th>Código</th>
+                           <th>Porta Palete</th>
+                           <th>Empresa</th>
+                           <th>Quantidade</th>
+                           <th>Requisição Vista?</th>
+                           <th>Horas que Desceu</th>
+                       </tr>
+                   </thead>
+               
+                   <tbody>
+                   {pieces && pieces.filter(piece => piece.created_at === dateNow).length > 0 ? (
+                       pieces.filter(piece => piece.created_at === dateNow).map((piece, index) => (
+                           <tr key={index} className="cursor-pointer hover:bg-neutral-200" onClick={() => handleOpenUpdate(piece)}>
+                               <td>{piece.hours}</td>
+                               <td>{piece.name}</td>
+                               <td>{piece.code}</td>
+                               <td>{piece.pallet_rack}</td>
+                               <td className={`${piece.company === 'Patral' ? 'text-cyan-600' : 'text-red-600'}`}>{piece.company}</td>
+                               <td>{piece.amount !== 0 ? piece.amount : ''}</td>
+                               <td>{piece.look ? <CiCircleCheck className="check"/> : ''}</td>
+                               <td>{piece.hours_down ? piece.hours_down : ''}</td>
+                           </tr>
+                       ))
+                   ) : (
+                       <tr>
+                           <td colSpan={8}>
+                               <div className="text-center h-32 flex items-center justify-center gap-4">
+                                   <GiGears className="text-cyan-600"/>
+                                   Não há peças para esta data.
+                               </div>
+                           </td>
+                       </tr>
+                   )}
+               
+                       { dates &&
+                           <tr className="tr-before">
+                               <th colSpan={8} className="border border-neutral-200">
+                                   <div className="before-days">
+                                       <FaLongArrowAltDown/>
+                                       <p>Dias Passados</p>
+                                       <FaLongArrowAltDown />
+                                   </div>
+                               </th>
+                           </tr>
+                       }
+               
+                       {dates &&
+                           dates.map((date, index) => (
+                               <React.Fragment key={index}>
+                                   <tr>
+                                       <th colSpan={8} >
+                                           <div className="flex items-center justify-center gap-2 h-14">
+                                               <FcCalendar size={32}/> {date}
+                                           </div>
+                                       </th>
+                                   </tr>
+                                   {pieces.filter(piece => piece.created_at === date).map(piece => (
+                                       <tr key={String(piece.id)} className="hover:bg-neutral-200">
+                                           <td>{piece.hours}</td>
+                                           <td>{piece.name}</td>
+                                           <td>{piece.code}</td>
+                                           <td>{piece.pallet_rack}</td>
+                                           <td className={`${piece.company === 'Patral' ? 'text-cyan-600' : 'text-red-600'}`}>{piece.company}</td>
+                                           <td>{piece.amount !== 0 ? piece.amount : ''}</td>
+                                           <td>{piece.looked ? <CiCircleCheck className="check" /> : ''}</td>
+                                           <td>{piece.hours_down ? piece.hours_down : ''}</td>
+                                       </tr>
+                                   ))}
+                                   <tr>
+                                       <th colSpan={8} className="border border-neutral-200">
+                                           <div className="before-days">
+               
+                                           </div>
+                                       </th>
+                                   </tr>
+                               </React.Fragment>
+                           ))
+                       }
+                   </tbody>
+               </table>
+           </div>
 
             <footer id="footer" className="fixed bottom-0 right-0 left-0 h-14 bg-cyan-600 text-zinc-700 flex justify-center items-center italic">Desenvolvido por Felipe Pinheiro</footer>
         </div>

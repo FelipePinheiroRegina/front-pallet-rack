@@ -90,7 +90,7 @@ export function Update({ openUpdate, onClick, data, isUpdate}) {
             data-open-update={openUpdate}
             className="update shadow-lg"
         >
-            <div className="w-full grid p-2">
+            <div className="w-full grid p-2 bg-cyan-600 mb-4">
                 <div className="justify-self-end flex items-center gap-2">
                     <small>Fechar modal</small>
                     <CiCircleRemove onClick={onClick} size={28} className="hover:scale-110 cursor-pointer" />
@@ -98,7 +98,7 @@ export function Update({ openUpdate, onClick, data, isUpdate}) {
             </div>
 
             <form className="pl-14 pr-14 flex flex-col gap-12">
-                <div className="grid grid-cols-3 gap-14 items-center">
+                <div className="xl:grid xl:grid-cols-3 xl:gap-14 xl:items-center xl:justify-between   flex flex-col gap-8">
                     <div className="flex flex-col gap-4">
                         <label htmlFor="code_update" className="flex flex-col gap-1">
                             <small>Código</small>
