@@ -29,9 +29,9 @@ html, body, input, button {
     width: 100%;
     background-color: #e5e5e5;
     display: grid;
-
     padding-top: 100px;
     padding-bottom: 100px;
+    height: 100%;
 }
 
 #chat {
@@ -41,10 +41,8 @@ html, body, input, button {
     left: 20px;
     display: grid;
     z-index: 1;
-    
-    grid-template-rows: 32px 350px 56px;
     grid-template-columns: 400px;
-    align-self: center;
+    justify-self: center;
 
     ::-webkit-scrollbar {
         width: 3px;
@@ -80,7 +78,7 @@ html, body, input, button {
     background-color: #e5e5e5;
     z-index: 10;
     width: 50%;
-   
+    min-width: 400px;
     display: none;
 }
 
@@ -105,16 +103,15 @@ html, body, input, button {
 }
 
 #form-create {
-    width: 70%;
-    
+    width: 50%;
 }
 
 .loader.true {
     border: 8px solid #f3f3f3; /* Light grey */
     border-top: 8px solid #0891b2; /* Blue */
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 16px;
+    height: 16px;
     animation: spin .5s linear infinite;
 }
 
@@ -122,24 +119,18 @@ html, body, input, button {
     border: 8px solid #f3f3f3; /* Light grey */
     border-top: 8px solid #0891b2; /* Blue */
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 16px;
+    height: 16px;
     animation: spin .5s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 
 .approved {
     display: none;
 }
 
-.approved.true {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 #button-create-modal {
@@ -170,7 +161,7 @@ html, body, input, button {
 
 .content {
     width: 100%;
-    height: 100vh;
+    
     display: grid;
     padding: 0 24px;
 }
@@ -216,8 +207,28 @@ html, body, input, button {
 }
 
 @media (min-width: 1280px) {
-    #form-create {
-        width: 50%;
+    .loader.true {
+        border: 8px solid #f3f3f3; /* Light grey */
+        border-top: 8px solid #0891b2; /* Blue */
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        animation: spin .5s linear infinite;
+    }
+    
+    .loader-update.true {
+        border: 8px solid #f3f3f3; /* Light grey */
+        border-top: 8px solid #0891b2; /* Blue */
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        animation: spin .5s linear infinite;
+    }
+
+    .approved.true {
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
     .update {
@@ -227,10 +238,6 @@ html, body, input, button {
     .content {
         padding: 0;
         padding-right: 24px;
-    }
-
-    #chat {
-        grid-template-rows: 32px 612px 56px;
     }
 
     .table {
@@ -259,11 +266,36 @@ html, body, input, button {
 }
 
 
-@media (min-width: 1500px) {
+@media (min-width: 1600px) {
     .table {
         width: 70%;
         justify-self: end;
         margin: 0;
+    
+    }
+}
+
+@media (min-height: 200px) {
+    #chat {
+        grid-template-rows: 32px 150px 56px;
+    }
+}
+
+@media (min-height: 400px) {
+    #chat {
+        grid-template-rows: 32px 300px 56px;
+    }
+}
+
+@media (min-height: 700px) {
+    #chat {
+        grid-template-rows: 32px 450px 56px;
+    }
+}
+
+@media (min-height: 900px) {
+    #chat {
+        grid-template-rows: 32px 612px 56px;
     }
 }
 

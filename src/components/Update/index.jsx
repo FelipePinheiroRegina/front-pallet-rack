@@ -97,8 +97,8 @@ export function Update({ openUpdate, onClick, data, isUpdate}) {
                 </div>
             </div>
 
-            <form className="pl-14 pr-14 flex flex-col gap-12">
-                <div className="xl:grid xl:grid-cols-3 xl:gap-14 xl:items-center xl:justify-between   flex flex-col gap-8">
+            <form className="pl-14 pr-14 flex flex-col ">
+                <div className="xl:grid xl:grid-cols-3 xl:gap-14 xl:items-center xl:justify-between   flex flex-col gap-2">
                     <div className="flex flex-col gap-4">
                         <label htmlFor="code_update" className="flex flex-col gap-1">
                             <small>Código</small>
