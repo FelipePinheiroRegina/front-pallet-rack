@@ -16,8 +16,7 @@
 
 <h2>Video como funciona a aplicação</h2>
 
-[Video](/interfaces-pallet-rack/pallet-rack.mp4)
-
+https://github.com/user-attachments/assets/05dcb366-9973-47f4-92e8-7a33396987b1
 
 <h2>Como rodar a aplicação</h2>
 
@@ -55,3 +54,5 @@ O projeto roda em um Ubuntu server na empresa, acessivel apenas para a rede loca
 <strong>Felipe Pinheiro Regina</strong>
 
 [LinkedIn](https://www.linkedin.com/in/felipe-pinheiro-002427250/)
+
+
